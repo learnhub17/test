@@ -1,0 +1,22 @@
+---
+es_version: "6.2.2"
+jvm_options: jvm.options.j2
+elasticsearch: elasticsearch.yml.j2
+limits: limits.conf.j2
+locked_memory: "true"
+#es_etc_network_host: '{{ ansible_eth1["ipv4"]["address"] }}'
+elasticsearch_script_inline: true
+elasticsearch_script_indexed: true
+cluster_name: delhivery-ES_test
+es_etc_cluster_name: "testing"
+es_etc_node_name: "{{ ansible_hostname }}"
+path_to_data: "/data/elastic/data"
+path_to_logs: "/data/elastic/logs"
+multicast: "false"
+minmasternode: 2
+es_etc_http_enabled: True
+http_port: 9400
+#es_etc_network_host: "{{ ansible_hostname }}"
+Xms: Xms4g
+Xmx: Xms4g
+location: "/home/ubuntu"

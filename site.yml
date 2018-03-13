@@ -1,0 +1,22 @@
+---
+
+- hosts: data 
+  roles:
+    - role: elasticsearch
+      es_etc_node_master: "false"
+      es_etc_node_data: "true"
+
+- hosts: master
+
+  roles:
+    - role: elasticsearch
+      es_etc_node_master: "true"
+      es_etc_node_data: "false"
+
+- hosts: client
+
+  roles:
+    - role: elasticsearch
+      es_etc_node_master: "false"
+      es_etc_node_data: "false"
+

@@ -1,0 +1,37 @@
+---
+# Install apt-transports package required for Installation of Elasticsearch
+- name: install apt-transports
+  apt:
+   name: apt-transport-https
+   state: present
+  become: true
+
+# Download a tarball for elasticsearch
+- name: download a tarball for elasticsearch 
+  get_url:
+   url: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ es_version }}.tar.gz"
+   dest: "{{ location }}"
+  become: true
+
+- name: unarchive elasticsearch
+  unarchive:
+    src: "{{ location }}/elasticsearch-{{ es_version }}.tar.gz"
+    dest: "{{ location }}"
+    remote_src: yes
+
+# confifure elasticsearch
+- name: configure elasticsearch
+  template:
+    src: "{{ item.name }}"
+    dest: "{{ item.path }}"
+  with_items:
+      - { name: '{{ elasticsearch }}', path: '{{ location }}/elasticsearch-{{ es_version }}/config/elasticsearch.yml' }
+      - { name: '{{ jvm_options }}', path: '{{ location }}/elasticsearch-{{ es_version }}/config/jvm.options' }
+#
+- name: change ownership
+  file:
+   dest={{ location }}/elasticsearch-{{ es_version }} owner=ubuntu group=ubuntu recurse=yes    
+- name: update vm.max count
+  lineinfile:
+    path: /etc/sysctl.conf 
+    line: vm.max_map_count=262144
